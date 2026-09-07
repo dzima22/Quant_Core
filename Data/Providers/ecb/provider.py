@@ -2,106 +2,62 @@ import requests,sys
 
 from Core.exceptions.exceptions import QuantTerminalException
 from configs.constants import maturities,rates
+from configs.constants import ECB_BASE_URL
+from configs.models import GetExchangeRateParams,GetInterestRateParams,GetYieldCurveParams
 
 class ECBProvider:
 
     def __init__(self):
         try:    
-            self.base_url = "https://data-api.ecb.europa.eu/service/data"
-            self.session = requests.Session()
+            super().__init__()
         except Exception as e:
             raise QuantTerminalException(e, sys)
         
-    def _get(self, dataset: str, series: str, params=None):
-
-        if params is None:
-            params = {}
-
+    def _get(self, dataset: str, series: str, params:dict)-> dict:
         try:
             response = self.session.get(
-                f"{self.base_url}/{dataset}/{series}",
+                f"{ECB_BASE_URL}/{dataset}/{series}",
                 params=params,
                 timeout=10,
             )
-
             response.raise_for_status()
-
             return response.json()
 
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
     def get_exchange_rate(
-        self,
-        currency: str,
-        start_date: str = None,
-        end_date: str = None):
+        self,params:GetExchangeRateParams):
         try:
-            params = {}
-
-            if start_date:
-                params["startPeriod"] = start_date
-
-            if end_date:
-                params["endPeriod"] = end_date
-
-            return self._get(
-                "EXR",
-                f"D.{currency}.EUR.SP00.A",
-                params)   
+            return self._get("EXR",
+                f"{params.frequency}.{params.currency}.{params.reference_currency}.{params.spot_rate}.{params.variation}",
+                    {
+            "startPeriod": params.start_date,
+            "endPeriod": params.end_date
+        })   
         except Exception as e:
             raise QuantTerminalException(e, sys)
     def get_interest_rate(
-        self,
-        rate_type: str = "deposit",
-        start_date: str = None,
-        end_date: str = None,
-    ):
+        self,params:GetInterestRateParams):
         try:
-            if rate_type not in rates:
-                raise ValueError(
-                    f"Unknown interest rate: {rate_type}"
-                )
-
-            params = {}
-
-            if start_date:
-                params["startPeriod"] = start_date
-
-            if end_date:
-                params["endPeriod"] = end_date
-
-            return self._get(
-                "FM",
-                rates[rate_type],
-                params)
+            return self._get("FM",
+                            f"{params.frequency}.{params.area}.{params.currency}.4F.KR.{params.rate}.{params.measure}",
+                            {
+            "startPeriod": params.start_date,
+            "endPeriod": params.end_date
+        })
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
     def get_yield_curve(
-        self,
-        maturity: str,
-        start_date: str = None,
-        end_date: str = None,
-    ):
+        self,params:GetYieldCurveParams):
         try:
-            maturity = maturity.upper()
-
-            if maturity not in maturities:
-                raise ValueError(
-                    f"Unsupported maturity: {maturity}")
-
-            params = {}
-
-            if start_date:
-                params["startPeriod"] = start_date
-
-            if end_date:
-                params["endPeriod"] = end_date
-
             return self._get(
                 "YC",
-                f"B.U2.EUR.4F.G_N_A.SV_C_YM.{maturities[maturity]}",
-                params)
+                f"B.{params.area}.{params.currency}.4F.G_N_A.{params.measure}.{params.maturity}",
+            {
+            "startPeriod": params.start_date,
+            "endPeriod": params.end_date
+        })
         except Exception as e:
             raise QuantTerminalException(e, sys)

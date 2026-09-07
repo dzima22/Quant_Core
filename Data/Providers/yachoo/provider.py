@@ -1,10 +1,10 @@
 import yfinance as yf
 import sys
-from Data.Providers.Base.provider import BaseProvider
+from Data.Providers.Base.api_provider import LibraryProvider
 from Core.exceptions.exceptions import QuantTerminalException
-
-class YahooREST(BaseProvider):
-
+### TO BE UPDATED 
+class YahooREST(LibraryProvider):
+### TO BE UPDATED 
     def get_quote(self, symbol: str):
         try:
             ticker = yf.Ticker(symbol)

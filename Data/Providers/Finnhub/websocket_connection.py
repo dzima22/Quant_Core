@@ -1,24 +1,22 @@
 import json
-import os,sys
-from configs.constants import finhub_websocket_url
+import sys
+from configs.constants import FINHUB_WEBSOCKET_FINAL_URL
 import websockets
-from dotenv import load_dotenv
 from Core.exceptions.exceptions import QuantTerminalException
-load_dotenv()
+from Data.Providers.Base.web_socket_provider import Websocket
 
 
-class FinnhubWebSocket:
+class FinnhubWebSocket(Websocket):
 
     def __init__(self):
         try:
-            self.url = os.path.join(finhub_websocket_url,f"{os.getenv('FINNHUB_API_KEY')}")
             self.websocket = None
         except Exception as e:
             raise QuantTerminalException(e,sys)
         
     async def connect(self):
         try:
-            self.websocket = await websockets.connect(self.url)
+            self.websocket = await websockets.connect(FINHUB_WEBSOCKET_FINAL_URL)
         except Exception as e:
             raise QuantTerminalException(e,sys)
         
