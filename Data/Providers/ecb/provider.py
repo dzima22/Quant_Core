@@ -1,11 +1,10 @@
-import requests,sys
-
+import sys
 from Core.exceptions.exceptions import QuantTerminalException
-from configs.constants import maturities,rates
 from configs.constants import ECB_BASE_URL
-from configs.models import GetExchangeRateParams,GetInterestRateParams,GetYieldCurveParams
+from configs.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams
+from Data.Providers.Base.api_provider import BaseProvider
 
-class ECBProvider:
+class ECBProvider(BaseProvider):
 
     def __init__(self):
         try:    
@@ -13,7 +12,7 @@ class ECBProvider:
         except Exception as e:
             raise QuantTerminalException(e, sys)
         
-    def _get(self, dataset: str, series: str, params:dict)-> dict:
+    def get(self, dataset: str, series: str, params:dict)-> dict:
         try:
             response = self.session.get(
                 f"{ECB_BASE_URL}/{dataset}/{series}",
@@ -26,25 +25,39 @@ class ECBProvider:
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
-    def get_exchange_rate(
-        self,params:GetExchangeRateParams):
+    def get_daily_avg_exchange_rate(
+        self,params:GetDailyExchangeRateParams):
         try:
-            return self._get("EXR",
-                f"{params.frequency}.{params.currency}.{params.reference_currency}.{params.spot_rate}.{params.variation}",
+            return self.get("EXR",
+                f"D.{params.currency}.{params.reference_currency}.SP00.A",
                     {
             "startPeriod": params.start_date,
-            "endPeriod": params.end_date
+            "endPeriod": params.end_date,
+            "format": "jsondata"
         })   
         except Exception as e:
             raise QuantTerminalException(e, sys)
+    def get_period_exchange_rate(self,params:GetPeriodExchangeRateParams):
+        try:
+            return self.get("EXR",
+                f"{params.frequency}.{params.currency}.{params.reference_currency}.SP00.{params.variation}",
+                    {
+            "startPeriod": params.start_date,
+            "endPeriod": params.end_date,
+            "format": "jsondata"
+        })   
+        except Exception as e:
+            raise QuantTerminalException(e, sys)
+        
     def get_interest_rate(
         self,params:GetInterestRateParams):
         try:
-            return self._get("FM",
-                            f"{params.frequency}.{params.area}.{params.currency}.4F.KR.{params.rate}.{params.measure}",
+            return self.get("FM",
+                            f"{params.frequency}.U2.{params.currency}.4F.KR.{params.rate}.{params.measure}",
                             {
             "startPeriod": params.start_date,
-            "endPeriod": params.end_date
+            "endPeriod": params.end_date,
+            "format": "jsondata"
         })
         except Exception as e:
             raise QuantTerminalException(e, sys)
@@ -52,12 +65,13 @@ class ECBProvider:
     def get_yield_curve(
         self,params:GetYieldCurveParams):
         try:
-            return self._get(
+            return self.get(
                 "YC",
-                f"B.{params.area}.{params.currency}.4F.G_N_A.{params.measure}.{params.maturity}",
+                f"B.U2.{params.currency}.4F.{params.instrument}.SV_C_YM.{params.maturity}",
             {
             "startPeriod": params.start_date,
-            "endPeriod": params.end_date
+            "endPeriod": params.end_date,
+            "format": "jsondata"
         })
         except Exception as e:
             raise QuantTerminalException(e, sys)

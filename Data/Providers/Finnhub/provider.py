@@ -1,9 +1,9 @@
 import os,sys
-import requests
 from configs.constants import FINHUB_BASE_URL
-from configs.models import GetBasicFinancialsParams
+from configs.models import GetBasicFinancialsParams,GetUSASpeandingPlusLobbingParams
 from Data.Providers.Base.api_provider import BaseProvider
 from Core.exceptions.exceptions import QuantTerminalException
+
 
 class FinnhubProvider(BaseProvider):
 
@@ -14,7 +14,7 @@ class FinnhubProvider(BaseProvider):
         except Exception as e:
             raise QuantTerminalException(e,sys)
         
-    def _get(self, endpoint: str, params: dict)-> dict:
+    def get(self, endpoint: str, params: dict)-> dict:
         try:
             response = self.session.get(
                 f"{FINHUB_BASE_URL}/{endpoint}",
@@ -28,10 +28,33 @@ class FinnhubProvider(BaseProvider):
         self,
         params: GetBasicFinancialsParams) -> dict:
         try:
-            return self._get(
+            return self.get(
                 "stock/metric",
                 params.model_dump()
             )
         except Exception as e:
             raise QuantTerminalException(e, sys)
+    def get_usa_spending(
+        self,
+        params: GetUSASpeandingPlusLobbingParams
+    ) -> dict:
+        try:
+            return self.get(
+                "stock/usa-spending",
+                params.model_dump()
+            )
+        except Exception as e:
+            raise QuantTerminalException(e, sys)
+    def get_senate_lobbying(
+        self,
+        params: GetUSASpeandingPlusLobbingParams
+    ) -> dict:
+        try:
+            return self.get(
+                "stock/lobbying",
+                params.model_dump()
+            )
+        except Exception as e:
+            raise QuantTerminalException(e, sys)
+
 

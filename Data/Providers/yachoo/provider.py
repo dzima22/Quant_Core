@@ -1,71 +1,70 @@
 import yfinance as yf
 import sys
-from Data.Providers.Base.api_provider import LibraryProvider
+from Data.Providers.Base.api_provider import BaseProvider
 from Core.exceptions.exceptions import QuantTerminalException
-### TO BE UPDATED 
-class YahooREST(LibraryProvider):
-### TO BE UPDATED 
-    def get_quote(self, symbol: str):
+from configs.models import YachooSymbol,YachooGetHistory
+
+class YahooREST(BaseProvider):
+
+    def _get(self,symbol:YachooSymbol):
         try:
             ticker = yf.Ticker(symbol)
-            return ticker.fast_info
+            return ticker
+        except Exception as e:
+            raise QuantTerminalException(e,sys)
+        
+    def get_quote(self,symbol:YachooSymbol):
+        try:
+            return dict(self._get(symbol).fast_info)
         except Exception as e:
             raise QuantTerminalException(e,sys)
             
     def get_history(
-        self,
-        symbol: str,
-        period: str = "1y",
-        interval: str = "1d"):
+        self,params:YachooGetHistory):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.history(
-            period=period,
-            interval=interval)
+            return self._get(params.symbol).history(
+            period=params.period,
+            interval=params.interval)
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-    def get_company(self, symbol: str):
+    def get_company(self,symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.info
+            return self._get(symbol).info
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-
-    def get_financials(self, symbol: str):
+    def get_financials(self,symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.financials
+            return self._get(symbol).financials
+        except Exception as e:
+            raise QuantTerminalException(e,sys)
+    def get_financials(self,symbol:YachooSymbol):
+        try:
+            return self._get(symbol).financials
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-
-    def get_balance_sheet(self, symbol: str):
+    def get_balance_sheet(self, symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.balance_sheet
+            return self._get(symbol).balance_sheet
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-
-    def get_cashflow(self, symbol: str):
+    def get_cashflow(self, symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.cashflow
+            return self._get(symbol).cashflow
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-    def get_dividends(self, symbol: str):
+    def get_dividends(self, symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.dividends
+            return self._get(symbol).dividends
         except Exception as e:
             raise QuantTerminalException(e,sys)
 
-    def get_splits(self, symbol: str):
+    def get_splits(self, symbol:YachooSymbol):
         try:
-            ticker = yf.Ticker(symbol)
-            return ticker.splits
+            return self._get(symbol).splits
         except Exception as e:
             raise QuantTerminalException(e,sys)
