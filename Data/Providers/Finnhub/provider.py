@@ -14,7 +14,7 @@ class FinnhubProvider(BaseProvider):
         except Exception as e:
             raise QuantTerminalException(e,sys)
         
-    def get(self, endpoint: str, params: dict)-> dict:
+    def get(self, endpoint: str, params: dict)->dict:
         try:
             response = self.session.get(
                 f"{FINHUB_BASE_URL}/{endpoint}",
@@ -26,7 +26,7 @@ class FinnhubProvider(BaseProvider):
             raise QuantTerminalException(e,sys)
     def get_basic_financials(
         self,
-        params: GetBasicFinancialsParams) -> dict:
+        params: GetBasicFinancialsParams)-> dict:
         try:
             return self.get(
                 "stock/metric",
@@ -48,7 +48,7 @@ class FinnhubProvider(BaseProvider):
     def get_senate_lobbying(
         self,
         params: GetUSASpeandingPlusLobbingParams
-    ) -> dict:
+    )-> dict:
         try:
             return self.get(
                 "stock/lobbying",

@@ -26,7 +26,7 @@ class ECBProvider(BaseProvider):
             raise QuantTerminalException(e, sys)
 
     def get_daily_avg_exchange_rate(
-        self,params:GetDailyExchangeRateParams):
+        self,params:GetDailyExchangeRateParams)->dict:
         try:
             return self.get("EXR",
                 f"D.{params.currency}.{params.reference_currency}.SP00.A",
@@ -37,7 +37,7 @@ class ECBProvider(BaseProvider):
         })   
         except Exception as e:
             raise QuantTerminalException(e, sys)
-    def get_period_exchange_rate(self,params:GetPeriodExchangeRateParams):
+    def get_period_exchange_rate(self,params:GetPeriodExchangeRateParams)->dict:
         try:
             return self.get("EXR",
                 f"{params.frequency}.{params.currency}.{params.reference_currency}.SP00.{params.variation}",
@@ -50,7 +50,7 @@ class ECBProvider(BaseProvider):
             raise QuantTerminalException(e, sys)
         
     def get_interest_rate(
-        self,params:GetInterestRateParams):
+        self,params:GetInterestRateParams)->dict:
         try:
             return self.get("FM",
                             f"{params.frequency}.U2.{params.currency}.4F.KR.{params.rate}.{params.measure}",
@@ -63,7 +63,7 @@ class ECBProvider(BaseProvider):
             raise QuantTerminalException(e, sys)
 
     def get_yield_curve(
-        self,params:GetYieldCurveParams):
+        self,params:GetYieldCurveParams)->dict:
         try:
             return self.get(
                 "YC",
