@@ -158,3 +158,12 @@ SERIES_FIELDS = [
     "pb",
     "evEbitda",
     "evRevenue",]
+
+METRICS_FOR_GRAPH = {
+    "Total Revenue": "Revenue",
+    "Gross Profit": "Gross Profit",
+    "Operating Income": "Operating Income",
+    "EBITDA": "EBITDA",
+    "Net Income": "Net Income",
+    "Diluted EPS": "Diluted EPS",
+}

@@ -2,7 +2,7 @@ import yfinance as yf
 import sys
 from Data.Providers.Base.api_provider import BaseProvider
 from Core.exceptions.exceptions import QuantTerminalException
-from configs.models import YachooSymbol,YachooGetHistory
+from Core.configs.models import YachooSymbol,YachooGetHistory
 import pandas as pd
 
 class YahooREST(BaseProvider):

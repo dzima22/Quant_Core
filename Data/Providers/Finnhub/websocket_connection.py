@@ -1,6 +1,6 @@
 import json
 import sys
-from configs.constants import FINHUB_WEBSOCKET_FINAL_URL
+from Core.configs.constants import FINHUB_WEBSOCKET_FINAL_URL
 import websockets
 from Core.exceptions.exceptions import QuantTerminalException
 from Data.Providers.Base.web_socket_provider import Websocket

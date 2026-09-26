@@ -1,7 +1,7 @@
 import sys
 from Core.exceptions.exceptions import QuantTerminalException
-from configs.constants import ECB_BASE_URL
-from configs.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams
+from Core.configs.constants import ECB_BASE_URL
+from Core.configs.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams
 from Data.Providers.Base.api_provider import BaseProvider
 
 class ECBProvider(BaseProvider):

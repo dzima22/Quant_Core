@@ -3,16 +3,16 @@ from Data.Providers.ecb.provider import ECBProvider
 from Data.Providers.Finnhub.provider import FinnhubProvider
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from utils.utils import parse_ecb,parse_usaspending,parse_lobbying,parse_basic_financials,data_parse_dataframes,data_parse_series,data_parse_history
-from configs.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol,GetUSASpeandingPlusLobbingParams,GetBasicFinancialsParams
+from Core.utils.utils import parse_ecb,parse_usaspending,parse_lobbying,parse_basic_financials,data_parse_dataframes,data_parse_series,data_parse_history
+from Core.configs.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol,GetUSASpeandingPlusLobbingParams,GetBasicFinancialsParams
 
 class DataService:
 
     def __init__(self, yahoo:YahooREST, finnhub:FinnhubProvider, ecb:ECBProvider):
         try:
-            self.yahoo = yahoo()
-            self.finnhub = finnhub()
-            self.ecb = ecb()
+            self.yahoo = yahoo
+            self.finnhub = finnhub
+            self.ecb = ecb
         except Exception as e:
             raise QuantTerminalException(e, sys)
     def data_parse_daily_exchange_rate(self, params: GetDailyExchangeRateParams)-> list[dict]:
@@ -50,7 +50,7 @@ class DataService:
             return data_parse_dataframes(df=self.yahoo.get_balance_sheet(symbol=symbol))
         except Exception as e:
             raise QuantTerminalException(e, sys)
-    def data_parse_financials(self, symbol:YachooSymbol)-> list[dict]:
+    def data_parse_financials_yachoo(self, symbol:YachooSymbol)-> list[dict]:
         try:
             return data_parse_dataframes(df=self.yahoo.get_financials(symbol=symbol))
         except Exception as e:
