@@ -1,6 +1,6 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.configs.models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol
+from Core.models.models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.patches import Rectangle
@@ -10,7 +10,7 @@ from Core.configs.constants import METRICS_FOR_GRAPH
 import numpy as np
 
 
-class TerminalServices:
+class ChartServices:
     def __init__(self):
         try:
             pass

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from API.terminal_repo.repository import Repository
-from Core.configs.models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
+from Core.models.models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
 from API.dependencies.repo_dependencies import get_repository
 from typing import Annotated
 from fastapi import Query

@@ -1,4 +1,4 @@
-from Core.configs.models import GetUSASpeandingPlusLobbingParams, GetBasicFinancialsParams,YachooSymbol,YachooGetHistory,GetUSASpeandingPlusLobbingParams,GetYieldCurveParams,GetInterestRateParams
+from Core.models.models import GetUSASpeandingPlusLobbingParams, GetBasicFinancialsParams,YachooSymbol,YachooGetHistory,GetUSASpeandingPlusLobbingParams,GetYieldCurveParams,GetInterestRateParams
 from dotenv import load_dotenv
 from API.routers.graphs_endpoints import graph_router
 from API.routers.raw_data_endpoints import raw_data_router
