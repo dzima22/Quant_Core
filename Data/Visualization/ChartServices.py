@@ -43,8 +43,8 @@ class ChartServices:
             )
 
             ax.set_title(
-                f"Yield Curve for {request_info.instrument} instrument, "
-                f"maturity: {request_info.maturity} in {request_info.currency}"
+                f"Yield Curve for {request_info.instrument.value} instrument, "
+                f"maturity: {request_info.maturity.value} in {request_info.currency}"
             )
 
             ax.set_xlabel("Date")

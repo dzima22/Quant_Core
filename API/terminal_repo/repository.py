@@ -1,16 +1,14 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.models.models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
-from Data.Services.Visualization.ChartServices import TerminalServices
+from Core.models.models import GetInterestRateParams,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
 from Data.Services.DataService import DataService
-from matplotlib.figure import Figure
-from API.dependencies.data_dependencies import get_data_service
+
 
 
 class Repository:
-    def __init__(self):
+    def __init__(self,data_service:DataService):
         try:
-            self.data_service=get_data_service()
+            self.data_service=data_service
         except Exception as e:
             raise QuantTerminalException(e, sys)
     def get_daily_exchange_rate_data(self,params: GetDailyExchangeRateParams)-> list[dict]:

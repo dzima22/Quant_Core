@@ -40,7 +40,7 @@ class ECBProvider(BaseProvider):
     def get_period_exchange_rate(self,params:GetPeriodExchangeRateParams)->dict:
         try:
             return self.get("EXR",
-                f"{params.frequency}.{params.currency}.{params.reference_currency}.SP00.{params.variation}",
+                f"{params.frequency.value}.{params.currency}.{params.reference_currency}.SP00.{params.variation.value}",
                     {
             "startPeriod": params.start_date,
             "endPeriod": params.end_date,
@@ -53,7 +53,7 @@ class ECBProvider(BaseProvider):
         self,params:GetInterestRateParams)->dict:
         try:
             return self.get("FM",
-                            f"{params.frequency}.U2.{params.currency}.4F.KR.{params.rate}.{params.measure}",
+                            f"{params.frequency.value}.U2.{params.currency}.4F.KR.{params.rate.value}.{params.measure.value}",
                             {
             "startPeriod": params.start_date,
             "endPeriod": params.end_date,
@@ -67,7 +67,7 @@ class ECBProvider(BaseProvider):
         try:
             return self.get(
                 "YC",
-                f"B.U2.{params.currency}.4F.{params.instrument}.SV_C_YM.{params.maturity}",
+                f"B.U2.{params.currency}.4F.{params.instrument.value}.SV_C_YM.{params.maturity.value}",
             {
             "startPeriod": params.start_date,
             "endPeriod": params.end_date,
