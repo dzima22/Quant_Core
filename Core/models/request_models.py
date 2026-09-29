@@ -1,7 +1,7 @@
 from Core.models.models import IgnoreExtraModel
 from datetime import date
 import re
-from enums import Variation,Frequency,InterestRate,YieldCurveInstrument,Measure,Maturity,Interval,Period
+from Core.models.enums import Variation,Frequency,InterestRate,YieldCurveInstrument,Measure,Maturity,Interval,Period
 from pydantic import Field,model_validator
 
 class GetDailyExchangeRateParams(IgnoreExtraModel):

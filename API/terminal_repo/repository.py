@@ -1,6 +1,6 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.models.request_models import GetInterestRateParams,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams,GetPeriodExchangeRateParams,YachooGetHistory
+from Core.models.request_models import GetInterestRateParams,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams,GetPeriodExchangeRateParams,YachooGetHistory,GetYieldCurveParams
 from Data.Services.DataService import DataService
 
 
@@ -53,6 +53,13 @@ class Repository:
     def get_history_data(self,params:YachooGetHistory)-> list[dict]:
         try:
             parsed_data=self.data_service.data_parse_history(params=params)
+            return parsed_data
+        except Exception as e:
+            raise QuantTerminalException(e, sys)
+        
+    def get_yield_curve_data(self,params:GetYieldCurveParams)-> list[dict]:
+        try:
+            parsed_data=self.data_service.data_parse_yield_curve(params=params)
             return parsed_data
         except Exception as e:
             raise QuantTerminalException(e, sys)

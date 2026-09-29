@@ -1,9 +1,9 @@
-from Core.models.models import GetUSASpeandingPlusLobbingParams, GetBasicFinancialsParams,YachooSymbol,YachooGetHistory,GetUSASpeandingPlusLobbingParams,GetYieldCurveParams,GetInterestRateParams
+from Core.models.request_models import GetUSASpeandingPlusLobbingParams, GetBasicFinancialsParams,YachooSymbol,YachooGetHistory,GetUSASpeandingPlusLobbingParams,GetYieldCurveParams,GetInterestRateParams
 from dotenv import load_dotenv
 from API.routers.graphs_endpoints import graph_router
 from API.routers.raw_data_endpoints import raw_data_router
 from fastapi import FastAPI
-
+from fastapi.middleware.cors import CORSMiddleware
 load_dotenv()
 
 
@@ -16,7 +16,16 @@ async def health_check():
 
 app.include_router(graph_router)
 app.include_router(raw_data_router)
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 ### CHECKS
 

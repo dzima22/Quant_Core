@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from API.terminal_repo.repository import Repository
-from Core.models.request_models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams,GetPeriodExchangeRateParams,YachooGetHistory
+from Core.models.request_models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams,GetPeriodExchangeRateParams,YachooGetHistory,GetYieldCurveParams,GetInterestRateParams
 from API.dependencies.repo_dependencies import get_repository
 
 raw_data_router = APIRouter(
@@ -53,3 +53,14 @@ def history_data(params: YachooGetHistory = Depends(),repo:Repository = Depends(
 def financials_data(symbol:YachooSymbol = Depends(),repo:Repository = Depends(get_repository)):
     data=repo.get_financials(symbol=symbol)
     return data
+
+@raw_data_router.get("/yield_curve")
+def yield_curve_data(params:GetYieldCurveParams = Depends(),repo:Repository = Depends(get_repository)):
+    data=repo.get_yield_curve_data(params=params)
+    return data
+
+@raw_data_router.get("/interest_rate")
+def interest_rate_data(params:GetInterestRateParams = Depends(),repo:Repository = Depends(get_repository)):
+    data=repo.get_interest_rate_data(params=params)
+    return data
+

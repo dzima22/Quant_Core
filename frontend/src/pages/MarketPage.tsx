@@ -1,0 +1,6 @@
+import{useEffect,useState}from"react";
+import{getHistory}from"../api/client";
+import type {HistoryRecord} from "../api/client";
+import{CandleChart}from"../components/Charts";
+import Panel from"../components/Panel";
+export default function Market(){const[symbol,setSymbol]=useState("AAPL"),[period,setPeriod]=useState("1y"),[interval,setInterval]=useState("1d"),[rows,setRows]=useState<HistoryRecord[]>([]),[error,setError]=useState("");useEffect(()=>{getHistory({symbol,period,interval}).then(setRows).catch(e=>setError(e.message))},[symbol,period,interval]);const d=rows.filter(r=>r.open!=null&&r.high!=null&&r.low!=null&&r.close!=null).map(r=>({time:r.date,open:r.open!,high:r.high!,low:r.low!,close:r.close!}));return <><div className="heading"><div><span>MARKET DATA</span><h1>{symbol} / Price</h1><p>OHLCV data</p></div><div className="controls"><input value={symbol} onChange={e=>setSymbol(e.target.value.toUpperCase())}/><select value={period} onChange={e=>setPeriod(e.target.value)}>{["1mo","3mo","6mo","1y","2y","5y"].map(x=><option key={x}>{x}</option>)}</select><select value={interval} onChange={e=>setInterval(e.target.value)}>{["1d","1wk","1mo"].map(x=><option key={x}>{x}</option>)}</select></div></div>{error&&<div className="error">{error}</div>}<Panel title="Candlestick Chart" subtitle={`${period} / ${interval}`}><CandleChart data={d}/></Panel></>}
