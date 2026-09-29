@@ -1,7 +1,7 @@
 from Core.models.models import IgnoreExtraModel
 from datetime import date
 import re
-from enums import Variation,Frequency,InterestRate,YieldCurveInstrument,Measure,Maturity
+from enums import Variation,Frequency,InterestRate,YieldCurveInstrument,Measure,Maturity,Interval,Period
 from pydantic import Field,model_validator
 
 class GetDailyExchangeRateParams(IgnoreExtraModel):
@@ -40,16 +40,16 @@ class GetBasicFinancialsParams(IgnoreExtraModel):
 
 class GetUSASpeandingPlusLobbingParams(IgnoreExtraModel):
     symbol: str
-    from_: str
-    to: str 
+    from_: date
+    to: date 
 
 class YachooSymbol(IgnoreExtraModel):
     symbol: str
 
 class YachooGetHistory(IgnoreExtraModel):
     symbol: str
-    period: str = "1y"
-    interval: str = "1d"
+    period: Period = Period.MONTH
+    interval: Interval = Interval.DAILY
 
 class GetInterestRateParams(IgnoreExtraModel):
     start_date: date = Field(alias="startPeriod")
