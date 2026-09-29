@@ -1,6 +1,6 @@
 import os,sys
 from Core.configs.constants import FINHUB_BASE_URL
-from Core.models.models import GetBasicFinancialsParams,GetUSASpeandingPlusLobbingParams
+from Core.models.request_models import GetBasicFinancialsParams,GetUSASpeandingPlusLobbingParams
 from Data.Providers.Base.api_provider import BaseProvider
 from Core.exceptions.exceptions import QuantTerminalException
 

@@ -3,8 +3,7 @@ import sys
 import pandas as pd
 
 from Core.exceptions.exceptions import QuantTerminalException
-from Core.models.models import (
-ECBObservation,
+from Core.models.response_models import (
 USASpendingResponse,
 LobbyingResponse,
 ValuationMetrics,

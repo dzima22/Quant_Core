@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from API.terminal_repo.repository import Repository
-from Core.models.models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
+from Core.models.request_models import YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
 from API.dependencies.repo_dependencies import get_repository
 
 raw_data_router = APIRouter(

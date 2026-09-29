@@ -1,6 +1,6 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.models.models import GetInterestRateParams,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
+from Core.models.request_models import GetInterestRateParams,YachooSymbol,GetDailyExchangeRateParams,GetUSASpeandingPlusLobbingParams
 from Data.Services.DataService import DataService
 
 

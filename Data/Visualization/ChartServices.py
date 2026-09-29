@@ -1,6 +1,6 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.models.models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol
+from Core.models.request_models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.patches import Rectangle

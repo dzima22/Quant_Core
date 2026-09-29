@@ -4,7 +4,7 @@ from Data.Providers.Finnhub.provider import FinnhubProvider
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
 from Core.utils.utils import parse_ecb,parse_usaspending,parse_lobbying,parse_basic_financials,data_parse_dataframes,data_parse_series,data_parse_history
-from Core.models.models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol,GetUSASpeandingPlusLobbingParams,GetBasicFinancialsParams
+from Core.models.request_models import GetDailyExchangeRateParams,GetPeriodExchangeRateParams,GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol,GetUSASpeandingPlusLobbingParams,GetBasicFinancialsParams
 
 class DataService:
 

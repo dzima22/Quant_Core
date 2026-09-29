@@ -1,7 +1,5 @@
 from fastapi import APIRouter, Depends
-from API.terminal_repo.repository import Repository
-from API.dependencies.repo_dependencies import get_repository
-from Core.models.models import (
+from Core.models.request_models import (
     GetInterestRateParams,
     GetYieldCurveParams,
     YachooGetHistory,
