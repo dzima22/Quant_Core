@@ -4,7 +4,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-
     finnhub_api_key: str = ""
 
     redis_url: str = "redis://localhost:6379/0"

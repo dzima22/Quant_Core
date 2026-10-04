@@ -17,7 +17,6 @@ def get_cache() -> RedisCache:
 
 @lru_cache
 def get_data_service() -> DataService:
-    settings = get_settings()
 
     return DataService(
         yahoo=YahooREST(),

@@ -2,9 +2,11 @@ from Core.models.models import IgnoreExtraModel
 from typing import Any
 from pydantic import ConfigDict, Field
 
+
 class ECBObservation(IgnoreExtraModel):
     TIME_PERIOD: str
     value: float | None = None
+
 
 class USASpendingRecord(IgnoreExtraModel):
     recipientName: str | None = None
@@ -41,6 +43,7 @@ class LobbyingResponse(IgnoreExtraModel):
     symbol: str | None = None
     data: list[LobbyingRecord] = Field(default_factory=list)
 
+
 class ValuationMetrics(IgnoreExtraModel):
     marketCapitalization: float | None = None
     enterpriseValue: float | None = None
@@ -59,6 +62,7 @@ class ValuationMetrics(IgnoreExtraModel):
     pfcfShareTTM: float | None = None
     pcfShareAnnual: float | None = None
     pcfShareTTM: float | None = None
+
 
 class ProfitabilityMetrics(IgnoreExtraModel):
     epsAnnual: float | None = None
@@ -84,6 +88,7 @@ class ProfitabilityMetrics(IgnoreExtraModel):
     roiAnnual: float | None = None
     roiTTM: float | None = None
 
+
 class GrowthMetrics(IgnoreExtraModel):
     revenueGrowth3Y: float | None = None
     revenueGrowth5Y: float | None = None
@@ -100,6 +105,7 @@ class GrowthMetrics(IgnoreExtraModel):
     focfCagr3Y: float | None = None
     focfCagr5Y: float | None = None
 
+
 class BalanceSheetMetrics(IgnoreExtraModel):
     bookValuePerShareAnnual: float | None = None
     bookValuePerShareQuarterly: float | None = None
@@ -111,6 +117,7 @@ class BalanceSheetMetrics(IgnoreExtraModel):
     quickRatioQuarterly: float | None = None
     cashPerSharePerShareAnnual: float | None = None
     cashPerSharePerShareQuarterly: float | None = None
+
 
 totalDebt_equityAnnual: float | None = Field(
     default=None,
@@ -154,8 +161,10 @@ class DividendMetrics(IgnoreExtraModel):
     payoutRatioTTM: float | None = None
     dividendGrowthRate5Y: float | None = None
 
+
 class MarketMetrics(IgnoreExtraModel):
     beta: float | None = None
+
 
 field_52WeekHigh: float | None = Field(
     default=None,
@@ -221,8 +230,10 @@ class FinancialSeries(IgnoreExtraModel):
     evEbitda: list[Any] | None = None
     evRevenue: list[Any] | None = None
 
+
 class FinancialSeriesContainer(IgnoreExtraModel):
     annual: FinancialSeries | None = None
+
 
 class BasicFinancialsResponse(IgnoreExtraModel):
     valuation: ValuationMetrics
@@ -232,6 +243,7 @@ class BasicFinancialsResponse(IgnoreExtraModel):
     dividends: DividendMetrics
     market: MarketMetrics
     series: FinancialSeries | None = None
+
 
 class HistoryRecord(IgnoreExtraModel):
     date: str
@@ -243,11 +255,12 @@ class HistoryRecord(IgnoreExtraModel):
     dividends: float | None = None
     stock_splits: float | None = None
 
+
 class SeriesRecord(IgnoreExtraModel):
     date: str
     value: float | None = None
 
+
 class DataFrameRecord(IgnoreExtraModel):
     date: str
-    model_config = ConfigDict(
-    extra="allow")
+    model_config = ConfigDict(extra="allow")

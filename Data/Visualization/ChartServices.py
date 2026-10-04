@@ -1,6 +1,11 @@
 from Core.exceptions.exceptions import QuantTerminalException
 import sys
-from Core.models.request_models import GetInterestRateParams,GetYieldCurveParams,YachooGetHistory,YachooSymbol
+from Core.models.request_models import (
+    GetInterestRateParams,
+    GetYieldCurveParams,
+    YachooGetHistory,
+    YachooSymbol,
+)
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.patches import Rectangle
@@ -8,7 +13,7 @@ from datetime import datetime
 from matplotlib.figure import Figure
 from Core.configs.constants import METRICS_FOR_GRAPH
 import numpy as np
-
+from Core.configs.constants import CANDLE_WIDTHS
 
 class ChartServices:
     def __init__(self):
@@ -17,30 +22,19 @@ class ChartServices:
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
-    
     def yield_curve_chart_generation(
-        self,
-        data: list[dict],
-        request_info: GetYieldCurveParams
+        self, data: list[dict], request_info: GetYieldCurveParams
     ) -> Figure:
         try:
             fig, ax = plt.subplots(figsize=(14, 7))
 
             dates = [
-                datetime.strptime(item["TIME_PERIOD"], "%Y-%m-%d")
-                for item in data
+                datetime.strptime(item["TIME_PERIOD"], "%Y-%m-%d") for item in data
             ]
 
-            values = [
-                item["value"]
-                for item in data
-            ]
+            values = [item["value"] for item in data]
 
-            ax.plot(
-                dates,
-                values,
-                linewidth=2.5
-            )
+            ax.plot(dates, values, linewidth=2.5)
 
             ax.set_title(
                 f"Yield Curve for {request_info.instrument.value} instrument, "
@@ -50,9 +44,7 @@ class ChartServices:
             ax.set_xlabel("Date")
             ax.set_ylabel("Yield (%)")
 
-            ax.xaxis.set_major_formatter(
-                mdates.DateFormatter("%Y-%m-%d")
-            )
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 
             # Remove grid
             ax.grid(False)
@@ -63,11 +55,7 @@ class ChartServices:
             ax.spines["bottom"].set_visible(False)
             ax.spines["left"].set_visible(False)
 
-            ax.tick_params(
-                axis="both",
-                which="both",
-                length=0
-            )
+            ax.tick_params(axis="both", which="both", length=0)
 
             fig.autofmt_xdate()
 
@@ -78,30 +66,25 @@ class ChartServices:
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
-        
-    def interest_rate_chart_generation(self,data:list[dict],request_info:GetInterestRateParams)->Figure:
+    def interest_rate_chart_generation(
+        self, data: list[dict], request_info: GetInterestRateParams
+    ) -> Figure:
         try:
             fig, ax = plt.subplots(figsize=(14, 7))
 
             dates = [
-                datetime.strptime(item["TIME_PERIOD"], "%Y-%m-%d")
-                for item in data]
+                datetime.strptime(item["TIME_PERIOD"], "%Y-%m-%d") for item in data
+            ]
 
-            values = [
-                item["value"]
-                for item in data]
+            values = [item["value"] for item in data]
 
-            ax.plot(dates, values,linewidth=2.5)
+            ax.plot(dates, values, linewidth=2.5)
 
-            ax.set_title(
-                f"{request_info.currency} Interest Rate"
-            )
+            ax.set_title(f"{request_info.currency} Interest Rate")
             ax.set_xlabel("Date")
             ax.set_ylabel("Interest Rate (%)")
 
-            ax.xaxis.set_major_formatter(
-                mdates.DateFormatter("%Y-%m-%d")
-            )
+            ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 
             fig.autofmt_xdate()
             ax.grid(False)
@@ -111,7 +94,6 @@ class ChartServices:
             ax.spines["bottom"].set_visible(False)
             ax.spines["left"].set_visible(False)
 
-
             plt.tight_layout()
 
             return fig
@@ -119,11 +101,8 @@ class ChartServices:
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
-        
     def candles_chart_generation(
-        self,
-        data: list[dict],
-        request_info: YachooGetHistory
+        self, data: list[dict], request_info: YachooGetHistory
     ) -> Figure:
         try:
             fig, ax = plt.subplots(figsize=(14, 7))
@@ -145,10 +124,7 @@ class ChartServices:
             dates = []
 
             for item in data:
-                date = datetime.strptime(
-                    item["date"],
-                    "%Y-%m-%d"
-                )
+                date = datetime.strptime(item["date"], "%Y-%m-%d")
 
                 dates.append(date)
 
@@ -167,10 +143,7 @@ class ChartServices:
 
                 # Wick
                 ax.plot(
-                    [x, x],
-                    [low_price, high_price],
-                    color=candle_color,
-                    linewidth=1
+                    [x, x], [low_price, high_price], color=candle_color, linewidth=1
                 )
 
                 # Body
@@ -178,15 +151,12 @@ class ChartServices:
                 body_height = abs(close_price - open_price)
 
                 rectangle = Rectangle(
-                    (
-                        x - candle_width / 2,
-                        body_bottom
-                    ),
+                    (x - candle_width / 2, body_bottom),
                     candle_width,
                     body_height if body_height > 0 else 0.01,
                     facecolor=candle_color,
                     edgecolor=candle_color,
-                    linewidth=0.8
+                    linewidth=0.8,
                 )
 
                 ax.add_patch(rectangle)
@@ -194,50 +164,23 @@ class ChartServices:
             # X axis
             ax.xaxis_date()
 
-            # Number of dates displayed on X axis
-            if request_info.period in ["1d", "5d"]:
-                number_of_ticks = 5
-
-            elif request_info.period == "1mo":
-                number_of_ticks = 6
-
-            elif request_info.period == "3mo":
-                number_of_ticks = 10
-
-            elif request_info.period == "6mo":
-                number_of_ticks = 20
-
-            elif request_info.period == "1y":
-                number_of_ticks = 30
-
-            elif request_info.period == "2y":
-                number_of_ticks = 50
-
-            elif request_info.period == "5y":
-                number_of_ticks = 60
-            else:
-                number_of_ticks = 5
-
-            # Select dates evenly across the whole period
+            number_of_ticks = CANDLE_WIDTHS.get(
+                request_info.period.value,
+                30,
+            )
             if len(dates) <= number_of_ticks:
                 tick_dates = dates
             else:
                 tick_indices = np.linspace(
-                    0,
-                    len(dates) - 1,
-                    number_of_ticks,
-                    dtype=int
+                    0, len(dates) - 1, number_of_ticks, dtype=int
                 )
 
-                tick_dates = [
-                    dates[i]
-                    for i in tick_indices
-                ]
+                tick_dates = [dates[i] for i in tick_indices]
 
             ax.set_xticks(tick_dates)
 
             # Date format
-            if request_info.interval in ["1mo", "3mo","6mo","1y","2y","5y"]:
+            if request_info.interval in ["1mo", "3mo", "6mo", "1y", "2y", "5y"]:
                 formatter = mdates.DateFormatter("%b %Y")
             else:
                 formatter = mdates.DateFormatter("%b %d")
@@ -245,28 +188,14 @@ class ChartServices:
             ax.xaxis.set_major_formatter(formatter)
 
             # Tick labels
-            ax.tick_params(
-                axis="both",
-                colors="white",
-                length=0
-            )
+            ax.tick_params(axis="both", colors="white", length=0)
 
-            plt.setp(
-                ax.get_xticklabels(),
-                rotation=0,
-                ha="center"
-            )
+            plt.setp(ax.get_xticklabels(), rotation=0, ha="center")
 
             # Labels
-            ax.set_xlabel(
-                "Date",
-                color="white"
-            )
+            ax.set_xlabel("Date", color="white")
 
-            ax.set_ylabel(
-                "Price",
-                color="white"
-            )
+            ax.set_ylabel("Price", color="white")
 
             # Title
             ax.set_title(
@@ -274,7 +203,7 @@ class ChartServices:
                 f"{request_info.period} / {request_info.interval}",
                 color="white",
                 fontsize=15,
-                fontweight="bold"
+                fontweight="bold",
             )
 
             # Remove borders
@@ -284,12 +213,7 @@ class ChartServices:
             ax.spines["left"].set_visible(False)
 
             # Subtle grid
-            ax.grid(
-                True,
-                color="#252a30",
-                linewidth=0.5,
-                alpha=0.5
-            )
+            ax.grid(True, color="#252a30", linewidth=0.5, alpha=0.5)
 
             plt.tight_layout()
 
@@ -298,9 +222,9 @@ class ChartServices:
         except Exception as e:
             raise QuantTerminalException(e, sys)
 
-
-        
-    def financials_chart_generation(self,data:list[dict],request_info:YachooSymbol)->Figure:
+    def financials_chart_generation(
+        self, data: list[dict], request_info: YachooSymbol
+    ) -> Figure:
         try:
             rows = []
 
@@ -327,7 +251,7 @@ class ChartServices:
                 cellText=rows,
                 colLabels=["Date"] + list(METRICS_FOR_GRAPH.values()),
                 loc="center",
-                cellLoc="center"
+                cellLoc="center",
             )
 
             table.auto_set_font_size(False)
@@ -339,10 +263,7 @@ class ChartServices:
             # Header
             for col in range(number_of_columns):
                 cell = table[(0, col)]
-                cell.set_text_props(
-                    weight="bold",
-                    fontsize=10
-                )
+                cell.set_text_props(weight="bold", fontsize=10)
                 cell.set_linewidth(0.8)
 
             # Body
@@ -354,12 +275,11 @@ class ChartServices:
                     if row % 2 == 0:
                         cell.set_facecolor("#F5F5F5")
 
-
             ax.set_title(
                 f"{request_info.symbol} Financial Summary",
                 fontsize=16,
                 fontweight="bold",
-                pad=20
+                pad=20,
             )
 
             plt.tight_layout()

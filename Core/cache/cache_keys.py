@@ -19,8 +19,6 @@ def build_cache_key(
         separators=(",", ":"),
     )
 
-    digest = hashlib.sha256(
-        raw.encode("utf-8")
-    ).hexdigest()
+    digest = hashlib.sha256(raw.encode("utf-8")).hexdigest()
 
     return f"quant:v1:{namespace}:{digest}"

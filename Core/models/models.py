@@ -1,7 +1,5 @@
-from pydantic import BaseModel,ConfigDict
+from pydantic import BaseModel, ConfigDict
+
 
 class IgnoreExtraModel(BaseModel):
-    model_config = ConfigDict(
-        extra="ignore",
-        populate_by_name=True)
-
+    model_config = ConfigDict(extra="ignore", populate_by_name=True)

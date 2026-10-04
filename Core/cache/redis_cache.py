@@ -4,7 +4,6 @@ from redis import Redis
 
 
 class RedisCache:
-
     def __init__(self, redis_url: str):
         self.client = Redis.from_url(
             redis_url,
