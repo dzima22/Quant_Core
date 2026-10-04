@@ -1,0 +1,57 @@
+services:
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+
+    container_name: quant_terminal_api
+
+    env_file:
+      - ../.env
+
+    environment:
+      REDIS_URL: redis://redis:6379/0
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      redis:
+        condition: service_healthy
+
+    volumes:
+      - ../logs:/app/logs
+
+    restart: unless-stopped
+
+
+  redis:
+    image: redis:7-alpine
+    container_name: quant_terminal_redis
+
+    command:
+      - redis-server
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+  frontend:
+    build:
+      context: ../frontend
+
+    container_name: quant_terminal_frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - api
+
+    restart: unless-stopped
